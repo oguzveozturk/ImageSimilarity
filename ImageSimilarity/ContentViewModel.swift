@@ -8,16 +8,37 @@
 import Combine
 import Vision
 
+@MainActor
 final class ContentViewModel:ObservableObject {
-    var mixed = [Array(0...10)]
-    var grouped = [[Int]]()
+    private var cancellable = Set<AnyCancellable>()
     
+    var stockUrls = [Array(0...10).compactMap { (Bundle.main.url(forResource: "\($0)", withExtension: "jpg")) }]
+    var groupedUrls = [[URL]]()
+        
     init() {
-        self.grouped = compare(analyze())
+        self.groupedUrls = compare(analyze(urls: stockUrls.first!))
+        
+        NotificationCenter.default.publisher(for: Notification.Name("imgURLs"))
+            .sink { [weak self] notif in
+            if let urls = notif.userInfo?["urls"] as? [URL] {
+                self?.addPhoto(urls: urls)
+            }
+        }.store(in: &cancellable)
     }
     
-    private func analyze() -> [(VNFeaturePrintObservation,Int)] {
-        Array(0...10).map { (observationForImage(Bundle.main.url(forResource: "\($0)", withExtension: "jpg")!)!,$0) }
+    func addPhoto(urls:[URL]) {
+        stockUrls[0].append(contentsOf: urls)
+        objectWillChange.send()
+        groupedUrls = compare(analyze(urls: stockUrls.first!))
+    }
+    
+    private func analyze(urls:[URL]) -> [ImageObservation] {
+        urls.compactMap { [weak self] url in
+            if let self = self, let observation = self.observationForImage(url) {
+                return ImageObservation(url: url, observation: observation)
+            }
+            return nil
+        }
     }
     
     private func observationForImage(_ url: URL) -> VNFeaturePrintObservation? {
@@ -32,37 +53,36 @@ final class ContentViewModel:ObservableObject {
         }
     }
     
-    private func compare(_ points:[(VNFeaturePrintObservation,Int)]) -> [[Int]] {
+    private func compare(_ points:[ImageObservation]) -> [[URL]] {
         guard !points.isEmpty else { return [] }
         var copyPoints = points
         
         var referencePhoto = copyPoints.first!
-        var groupedIndexes = [[referencePhoto.1]]
+        var groupedURLs = [[referencePhoto.url]]
         copyPoints.removeFirst()
         var i = 0
         
         while !copyPoints.isEmpty {
             var distance = Float(0)
-            try? copyPoints[i].0.computeDistance(&distance, to: referencePhoto.0)
+            try? copyPoints[i].observation.computeDistance(&distance, to: referencePhoto.observation)
             let isLastLoop = i == copyPoints.count-1
             
-            if distance == 0 {
-                groupedIndexes[groupedIndexes.count-1].append(copyPoints[i].1)
+            if distance < 14 {
+                groupedURLs[groupedURLs.count-1].append(copyPoints[i].url)
                 copyPoints.remove(at: i)
                 if isLastLoop { reset() }
             } else {
                 isLastLoop ? reset() : (i += 1)
             }
-            print(groupedIndexes)
         }
         
         func reset() {
             referencePhoto = copyPoints.first!
-            groupedIndexes.append([referencePhoto.1])
+            groupedURLs.append([referencePhoto.url])
             copyPoints.removeFirst()
             i = 0
         }
         
-        return groupedIndexes
+        return groupedURLs
     }
 }

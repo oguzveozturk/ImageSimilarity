@@ -22,6 +22,8 @@
 		F4279F4F28EF3A6400B939D7 /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F4279F4628EF3A6400B939D7 /* 4.jpg */; };
 		F4279F5228F0506C00B939D7 /* 9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F4279F5128F0506C00B939D7 /* 9.jpg */; };
 		F4279F5428F05F7400B939D7 /* 10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F4279F5328F05F7400B939D7 /* 10.jpg */; };
+		F4279F5628F0730400B939D7 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4279F5528F0730400B939D7 /* PhotoPicker.swift */; };
+		F4279F5828F080BB00B939D7 /* ImageObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4279F5728F080BA00B939D7 /* ImageObservation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,9 @@
 		F4279F4628EF3A6400B939D7 /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
 		F4279F5128F0506C00B939D7 /* 9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 9.jpg; sourceTree = "<group>"; };
 		F4279F5328F05F7400B939D7 /* 10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10.jpg; sourceTree = "<group>"; };
+		F4279F5528F0730400B939D7 /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
+		F4279F5728F080BA00B939D7 /* ImageObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageObservation.swift; sourceTree = "<group>"; };
+		F4279F5928F08B4100B939D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +81,8 @@
 				F4279F2D28EF37AE00B939D7 /* ImageSimilarityApp.swift */,
 				F4279F2F28EF37AE00B939D7 /* ContentView.swift */,
 				F4279F3B28EF38F200B939D7 /* ContentViewModel.swift */,
+				F4279F5728F080BA00B939D7 /* ImageObservation.swift */,
+				F4279F5528F0730400B939D7 /* PhotoPicker.swift */,
 				F4279F3D28EF3A5B00B939D7 /* Resources */,
 			);
 			path = ImageSimilarity;
@@ -84,6 +91,7 @@
 		F4279F3D28EF3A5B00B939D7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F4279F5928F08B4100B939D7 /* Info.plist */,
 				F4279F3128EF37AF00B939D7 /* Assets.xcassets */,
 				F4279F5028EF3A7100B939D7 /* Images */,
 			);
@@ -188,8 +196,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4279F5628F0730400B939D7 /* PhotoPicker.swift in Sources */,
 				F4279F3028EF37AE00B939D7 /* ContentView.swift in Sources */,
 				F4279F2E28EF37AE00B939D7 /* ImageSimilarityApp.swift in Sources */,
+				F4279F5828F080BB00B939D7 /* ImageObservation.swift in Sources */,
 				F4279F3C28EF38F200B939D7 /* ContentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,6 +332,8 @@
 				DEVELOPMENT_TEAM = VYNNYZBQ5A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ImageSimilarity/Resources/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Needed permission";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -351,6 +363,8 @@
 				DEVELOPMENT_TEAM = VYNNYZBQ5A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ImageSimilarity/Resources/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Needed permission";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
