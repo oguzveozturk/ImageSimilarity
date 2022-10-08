@@ -15,26 +15,28 @@ struct ContentView: View {
     @State private var showGallery = false
     @State private var ordered = false
     
-    let columns = [GridItem(.adaptive(minimum: 90, maximum: 110))]
+    let columns = [GridItem(.adaptive(minimum: 110),spacing: 10)]
     
     var body: some View {
         NavigationView {
             ScrollView(showsIndicators: false) {
                 Picker("", selection: $selection) {
                     Text("Mixed").tag(0)
-                    Text("Ordered").tag(1)
+                    Text("Grouped").tag(1)
                 }.pickerStyle(.segmented)
 
                 LazyVGrid(columns: columns) {
                     ForEach(ordered ? viewModel.groupedUrls : viewModel.stockUrls, id:\.self) { section in
                         Section("") {
                             ForEach(section,id:\.self) { url in
-                                AsyncImage(url: url) { image in
-                                    image.resizable()
+                                AsyncImage(url: url,scale:0.4) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
                                 } placeholder: {
                                     Color(.systemGray6)
                                 }
-                                .frame(height: 80)
+                                .frame(width:110,height:80)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                             }
                         }
@@ -45,19 +47,40 @@ struct ContentView: View {
             .navigationTitle("Similar Images")
             .toolbar {
                 ToolbarItem(placement:.navigationBarTrailing) {
-                    Button("Add") {
+                    AddContainer {
                         selection = 0
                         showGallery.toggle()
                     }
                 }
             }
         }
+        .navigationViewStyle(.stack)
         .sheet(isPresented: $showGallery, content: {
             PhotoPicker(filter:.images)
         })
         .onChange(of: selection) { newValue in
             withAnimation {
                 ordered = newValue != 0
+            }
+        }
+    }
+}
+
+struct AddContainer:View {
+    @State private var text = "Add"
+    var tapped:()->Void
+    
+    var body: some View {
+        Button(text) {
+            if text == "Add" {
+                tapped()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .indexes)) { notif in
+            if let indexText = notif.userInfo?["data"] as? String {
+                DispatchQueue.main.async {
+                    text = indexText
+                }
             }
         }
     }

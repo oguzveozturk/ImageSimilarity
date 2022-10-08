@@ -8,6 +8,7 @@
 
 import SwiftUI
 import PhotosUI
+import QuickLookThumbnailing
 
 struct PhotoPicker: UIViewControllerRepresentable {
     
@@ -42,51 +43,42 @@ struct PhotoPicker: UIViewControllerRepresentable {
         
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
             picker.dismiss(animated: true)
-            var urls = [URL]()
-            let myGroup = DispatchGroup()
-            
-            results.forEach { result in
-                
-                myGroup.enter()
-                
-                result.itemProvider.loadObject(ofClass: UIImage.self) { reading, error in
-                    if  reading as? UIImage != nil, error == nil {
-                        
-                        result.itemProvider.loadFileRepresentation(forTypeIdentifier: "public.image") { url, _ in
-                            if let url = url,
-                               let dstUrl = FileManager.default.copyImage(url) {
-                                print(dstUrl)
-                                urls.append(dstUrl)
-                                myGroup.leave()
-                            }
-                        }
-                    }
-                    
+            var urls = [URL]() {
+                didSet {
+                    NotificationCenter.default.send(.indexes, "\(urls.count)/\(totalResult)")
                 }
             }
             
-            myGroup.notify(queue: .main) {
-                NotificationCenter.default.post(name: Notification.Name("imgURLs"), object: nil, userInfo: ["urls":urls])
+            let phpGroup = DispatchGroup()
+            
+            let totalResult = results.count
+            results.forEach { result in
+                
+                phpGroup.enter()
+                
+                result.itemProvider.loadObject(ofClass: UIImage.self) { reading, error in
+                    if  reading as? UIImage != nil, error == nil {
+                        result.itemProvider.loadFileRepresentation(forTypeIdentifier: "public.image") { url, _ in
+                            if let url = url,
+                               let imageUrl = FileManager.default.copyImage(url) {
+                                
+                                ThumbnailGenerator().thumbUrl(for: imageUrl) { thumbUrl in
+                                    if let thumbUrl = thumbUrl {
+                                        DispatchQueue.main.async { urls.append(thumbUrl) }
+                                        phpGroup.leave()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            phpGroup.notify(queue: .main) {
+                NotificationCenter.default.send(.imageURLs, urls)
+                NotificationCenter.default.send(.indexes, "Add")
             }
         }
     }
 }
 
-extension FileManager {
-    func copyImage(_ sourceUrl: URL) -> URL? {
-        let imagesFolder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("Images")
-        let dstURL = imagesFolder.appendingPathComponent("\(sourceUrl.lastPathComponent)_\(UUID().uuidString)")
-        do {
-            if FileManager.default.fileExists(atPath: dstURL.path) {
-                try FileManager.default.removeItem(at: dstURL)
-            }
-            
-            try FileManager.default.createDirectory(at: imagesFolder, withIntermediateDirectories: true, attributes: nil)
-            try FileManager.default.copyItem(at: sourceUrl, to: dstURL)
-            return dstURL
-        } catch {
-            print("Cannot copy item \(error)")
-            return nil
-        }
-    }
-}

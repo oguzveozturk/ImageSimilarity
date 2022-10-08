@@ -16,17 +16,23 @@ final class ContentViewModel:ObservableObject {
     var groupedUrls = [[URL]]()
         
     init() {
+        self.imagesFromLastSession()
         self.groupedUrls = compare(analyze(urls: stockUrls.first!))
         
-        NotificationCenter.default.publisher(for: Notification.Name("imgURLs"))
+        NotificationCenter.default.publisher(for: .imageURLs)
             .sink { [weak self] notif in
-            if let urls = notif.userInfo?["urls"] as? [URL] {
+            if let urls = notif.userInfo?["data"] as? [URL] {
                 self?.addPhoto(urls: urls)
             }
         }.store(in: &cancellable)
     }
     
-    func addPhoto(urls:[URL]) {
+    private func imagesFromLastSession() {
+        stockUrls[0].append(contentsOf: FileManager.default.imageUrls())
+    }
+    
+    private func addPhoto(urls:[URL]) {
+        guard !urls.isEmpty else { return }
         stockUrls[0].append(contentsOf: urls)
         objectWillChange.send()
         groupedUrls = compare(analyze(urls: stockUrls.first!))
@@ -77,6 +83,7 @@ final class ContentViewModel:ObservableObject {
         }
         
         func reset() {
+            guard !copyPoints.isEmpty else { return }
             referencePhoto = copyPoints.first!
             groupedURLs.append([referencePhoto.url])
             copyPoints.removeFirst()

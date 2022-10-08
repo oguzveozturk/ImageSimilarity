@@ -24,6 +24,10 @@
 		F4279F5428F05F7400B939D7 /* 10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F4279F5328F05F7400B939D7 /* 10.jpg */; };
 		F4279F5628F0730400B939D7 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4279F5528F0730400B939D7 /* PhotoPicker.swift */; };
 		F4279F5828F080BB00B939D7 /* ImageObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4279F5728F080BA00B939D7 /* ImageObservation.swift */; };
+		F4279F5B28F0C7EA00B939D7 /* FileManager+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4279F5A28F0C7EA00B939D7 /* FileManager+Ext.swift */; };
+		F4279F5D28F0D34400B939D7 /* Notification+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4279F5C28F0D34400B939D7 /* Notification+Ext.swift */; };
+		F44E5E1828F1C1D10018F71B /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44E5E1728F1C1D10018F71B /* UIImage+Ext.swift */; };
+		F45F1F8628F1BCF1007ED3B3 /* ThumbnailGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45F1F8528F1BCF1007ED3B3 /* ThumbnailGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +50,10 @@
 		F4279F5528F0730400B939D7 /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
 		F4279F5728F080BA00B939D7 /* ImageObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageObservation.swift; sourceTree = "<group>"; };
 		F4279F5928F08B4100B939D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4279F5A28F0C7EA00B939D7 /* FileManager+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Ext.swift"; sourceTree = "<group>"; };
+		F4279F5C28F0D34400B939D7 /* Notification+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Ext.swift"; sourceTree = "<group>"; };
+		F44E5E1728F1C1D10018F71B /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
+		F45F1F8528F1BCF1007ED3B3 /* ThumbnailGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +90,8 @@
 				F4279F2F28EF37AE00B939D7 /* ContentView.swift */,
 				F4279F3B28EF38F200B939D7 /* ContentViewModel.swift */,
 				F4279F5728F080BA00B939D7 /* ImageObservation.swift */,
-				F4279F5528F0730400B939D7 /* PhotoPicker.swift */,
+				F44E5E1A28F1C1ED0018F71B /* Helpers */,
+				F44E5E1928F1C1E40018F71B /* Extensions */,
 				F4279F3D28EF3A5B00B939D7 /* Resources */,
 			);
 			path = ImageSimilarity;
@@ -114,6 +123,25 @@
 				F4279F5328F05F7400B939D7 /* 10.jpg */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		F44E5E1928F1C1E40018F71B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F4279F5A28F0C7EA00B939D7 /* FileManager+Ext.swift */,
+				F4279F5C28F0D34400B939D7 /* Notification+Ext.swift */,
+				F44E5E1728F1C1D10018F71B /* UIImage+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F44E5E1A28F1C1ED0018F71B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F4279F5528F0730400B939D7 /* PhotoPicker.swift */,
+				F45F1F8528F1BCF1007ED3B3 /* ThumbnailGenerator.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,7 +227,11 @@
 				F4279F5628F0730400B939D7 /* PhotoPicker.swift in Sources */,
 				F4279F3028EF37AE00B939D7 /* ContentView.swift in Sources */,
 				F4279F2E28EF37AE00B939D7 /* ImageSimilarityApp.swift in Sources */,
+				F4279F5B28F0C7EA00B939D7 /* FileManager+Ext.swift in Sources */,
 				F4279F5828F080BB00B939D7 /* ImageObservation.swift in Sources */,
+				F4279F5D28F0D34400B939D7 /* Notification+Ext.swift in Sources */,
+				F44E5E1828F1C1D10018F71B /* UIImage+Ext.swift in Sources */,
+				F45F1F8628F1BCF1007ED3B3 /* ThumbnailGenerator.swift in Sources */,
 				F4279F3C28EF38F200B939D7 /* ContentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
